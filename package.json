@@ -1,0 +1,26 @@
+{
+  "name": "@fuze/warden-authentication",
+  "version": "1.0.2",
+  "description": "Module to authenticate  Fuze apps using Warden REST API",
+  "author": "Fuze INC. <support@fuze.com>",
+  "main": "fuzeAuth.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "tape": "4.8.0",
+    "express": "4.15.4"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/tape test/*.test.js"
+  },
+  "repository": {
+    "url": "https://github.com/fuze/gts/tree/master/Modules/warden-authentication",
+    "type": "private"
+  },
+  "keywords": [
+    "fuze",
+    "Warden",
+    "authentication"
+  ]
+}
