@@ -11,11 +11,9 @@ function getWardenSecurityToken (fuzeUsername, fuzePassword, useremail, wardenSe
         let optionsget =  AuthenticationOptions.createGetOptionIdOptions(wardenServer, wardenPort, wardenGetPath, app_token)
         
         let reqGet = protocol.request(optionsget, (res) => {
-            console.log("statusCode: " + res.statusCode);
             
             res.on('data', (getData) => {
                 let wardenWithOptionId = JSON.parse(getData);
-                console.log('GET result: ' + getData);
                 
                 let originName = wardenWithOptionId.data.options[0].originName.toString();
                 let optionId = AuthenticationResponseParser.getOptionId(getData.toString())
