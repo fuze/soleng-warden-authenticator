@@ -94,12 +94,8 @@ function validateWardenToken(wardenServer, wardenPort, security_token, apiVersio
         let reqGet = protocol.request(optionsget, (res) => {
             res.on('data', (getData)  => {
                 let getDataObj = JSON.parse(getData);
-                console.log(getDataObj);
-                if(getDataObj.data && getDataObj.data.grant && getDataObj.data.grant.token) {
-                    resolve(true)
-                }else {
-                    reject(new Error('No valid token'));
-                }
+                const hasToken = getDataObj.data && getDataObj.data.grant && getDataObj.data.grant.token;
+                resolve(hasToken);
             })
         })
 
