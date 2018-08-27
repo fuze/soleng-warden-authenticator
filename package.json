@@ -12,7 +12,8 @@
     "express": "4.15.4"
   },
   "scripts": {
-    "test": "node_modules/.bin/tape test/*.test.js"
+    "test": "node_modules/.bin/tape test/*.test.js",
+    "postversion": "git push"
   },
   "repository": {
     "url": "https://github.com/fuze/soleng-warden-authenticator.git",
