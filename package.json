@@ -1,5 +1,5 @@
 {
-  "name": "@fuze/warden-authentication",
+  "name": "soleng-warden-client",
   "version": "1.0.5",
   "description": "Module to authenticate  Fuze apps using Warden REST API",
   "author": "Fuze INC. <support@fuze.com>",
