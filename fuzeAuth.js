@@ -1,31 +1,32 @@
 'use strict'
 
-const AuthenticationOptions = require('./AuthenticationOptions').AuthenticationOptions
-const AuthenticationResponseParser = require('./AuthenticationResponseParser').AuthenticationResponseParser
+const AuthenticationOptions = require('./AuthenticationOptions').AuthenticationOptions;
+const AuthenticationResponseParser = require('./AuthenticationResponseParser').AuthenticationResponseParser;
+const https = require('https');
 
 function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenServer, wardenPort, app_token, apiVersion = 'v1', protocol = require('https')) {
   return new Promise((resolve, reject) => {
     let wardenGetPath = '/api/' + apiVersion + '/users/' + fuzeUsername + '/auth/options';
     
-    let optionsget = AuthenticationOptions.createGetOptionIdOptions(wardenServer, wardenPort, wardenGetPath, app_token)
+    let optionsget = AuthenticationOptions.createGetOptionIdOptions(wardenServer, wardenPort, wardenGetPath, app_token);
     let reqGet = protocol.request(optionsget, (res) => {
 
       res.on('data', (getData) => {
         let wardenWithOptionId = JSON.parse(getData);
 
         let originName = wardenWithOptionId.data.options[0].originName.toString();
-        let optionId = AuthenticationResponseParser.getOptionId(getData.toString())
+        let optionId = AuthenticationResponseParser.getOptionId(getData.toString());
 
         if (originName == "portal") {
           let wardenPostPath = wardenGetPath + "/" + optionId;
-          let optionspost = AuthenticationOptions.createAuthenticationOptions(wardenServer, wardenPort, wardenPostPath, app_token)
+          let optionspost = AuthenticationOptions.createAuthenticationOptions(wardenServer, wardenPort, wardenPostPath, app_token);
 
           let reqPost = protocol.request(optionspost, (res) => {
             res.on('data', (postData) => {
               let postDataObj = JSON.parse(postData);
 
-              let userId = AuthenticationResponseParser.getUserId(postData.toString())
-              let tenantId = AuthenticationResponseParser.getTenantId(postData.toString())
+              let userId = AuthenticationResponseParser.getUserId(postData.toString());
+              let tenantId = AuthenticationResponseParser.getTenantId(postData.toString());
 
               let wardenSecurity = {}; // this will be a javascript object.
 
@@ -38,7 +39,6 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
               wardenSecurity['appToken'] = app_token;
 
               if (postDataObj['status'] == 0) {
-
                 wardenSecurity['securityToken'] = postDataObj.data.grant['token'];
                 wardenSecurity['cacheUntil'] = postDataObj.data.grant['cacheUntil'];
                 wardenSecurity['tenantId'] = tenantId;
@@ -48,7 +48,6 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
                 wardenSecurity['userId'] = userId;
 
                 resolve(wardenSecurity);
-
               } else {
                   reject(postDataObj['msg'])
               }
@@ -63,9 +62,7 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
 
           reqPost.end();
 
-          reqPost.on('error', (e) => {
-              reject(e)
-          });
+          reqPost.on('error', (e) => { reject(e); });
 
         } else {
             reject(new Error(fuzeUsername + " is not a portal (origin) user."))
@@ -75,9 +72,7 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
 
     reqGet.end();
 
-    reqGet.on('error', (e) => {
-        reject(e);
-    });
+    reqGet.on('error', (e) => { reject(e) });
 
   });
 }
@@ -85,8 +80,8 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
 // TODO: To deprecate and use exchangeWardenToken instead
 function validateWardenToken(wardenServer, wardenPort, security_token, apiVersion = 'v1', protocol = require('https')) {
   return new Promise((resolve, reject) => {
-    let wardenGetPath = '/api/' + apiVersion + '/tokens/current'
-    let optionsget = AuthenticationOptions.createValidateTokenOptions(wardenServer, wardenPort, wardenGetPath, security_token)
+    let wardenGetPath = '/api/' + apiVersion + '/tokens/current';
+    let optionsget = AuthenticationOptions.createValidateTokenOptions(wardenServer, wardenPort, wardenGetPath, security_token);
 
     let reqGet = protocol.request(optionsget, (res) => {
         res.on('data', (getData) => {
