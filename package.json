@@ -7,13 +7,9 @@
   "directories": {
     "test": "test"
   },
-  "devDependencies": {
-    "tape": "4.8.0",
-    "express": "4.15.4"
-  },
   "scripts": {
     "test": "node_modules/.bin/tape test/*.test.js",
-    "postversion": "git push"
+    "release": "release-it"
   },
   "repository": {
     "url": "https://github.com/fuze/soleng-warden-authenticator.git",
@@ -27,5 +23,10 @@
   "dependencies": {
     "chalk": "^2.3.1",
     "yargs": "^11.0.0"
+  },
+  "devDependencies": {
+    "express": "4.15.4",
+    "release-it": "^8.2.0",
+    "tape": "4.8.0"
   }
 }
