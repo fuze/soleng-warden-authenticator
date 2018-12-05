@@ -20,6 +20,7 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
         if (originName == "portal") {
           let wardenPostPath = wardenGetPath + "/" + optionId;
           let optionspost = AuthenticationOptions.createAuthenticationOptions(wardenServer, wardenPort, wardenPostPath, app_token);
+          optionspost.rejectUnauthorized = false;
 
           let reqPost = protocol.request(optionspost, (res) => {
             res.on('data', (postData) => {
@@ -82,6 +83,7 @@ function validateWardenToken(wardenServer, wardenPort, security_token, apiVersio
   return new Promise((resolve, reject) => {
     let wardenGetPath = '/api/' + apiVersion + '/tokens/current';
     let optionsget = AuthenticationOptions.createValidateTokenOptions(wardenServer, wardenPort, wardenGetPath, security_token);
+    optionsget.rejectUnauthorized = false;
 
     let reqGet = protocol.request(optionsget, (res) => {
         res.on('data', (getData) => {
@@ -112,6 +114,7 @@ function exchangeWardenToken(token, wardenServer) {
           'Content-Type': 'application/json',
           'X-Long-Encoding': 'string',
         },
+        rejectUnauthorized: false,
       };
   
       const reqPost = https.request(optionspost, (res) => {
@@ -144,6 +147,7 @@ function checkIfTokenIsValid(token, wardenServer) {
           'Content-Type': 'application/json',
           'X-Long-Encoding': 'string',
         },
+        rejectUnauthorized: false,
       };
   
       const reqGet = https.request(optionsget, (res) => {
