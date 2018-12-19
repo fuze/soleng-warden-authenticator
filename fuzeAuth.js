@@ -157,12 +157,16 @@ function checkIfTokenIsValid(token, wardenServer) {
         });
   
         res.on('end', () => {
-          const getDataObj = JSON.parse(response);
-  
-          if (getDataObj.data && getDataObj.data.grant && getDataObj.data.grant.token) {
-            resolve(getDataObj);
-          } else {
-            reject(new Error('Invalid Token.'));
+          try {
+            const getDataObj = JSON.parse(response);
+
+            if (getDataObj.data && getDataObj.data.grant && getDataObj.data.grant.token) {
+              resolve(getDataObj);
+            } else {
+              reject(new Error('Invalid Token.'));
+            }
+          } catch (e) {
+            reject(e);
           }
         });
       });
