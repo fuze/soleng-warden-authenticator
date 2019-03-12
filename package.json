@@ -8,8 +8,7 @@
     "release": "release-it"
   },
   "author": "Fuze INC. <support@fuze.com>",
-  "license": "UNLICENSED",
-  "private": true,
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/fuze/soleng-warden-authenticator.git"

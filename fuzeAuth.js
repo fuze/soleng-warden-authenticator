@@ -78,7 +78,6 @@ function getWardenSecurityToken(fuzeUsername, fuzePassword, useremail, wardenSer
   });
 }
 
-// TODO: To deprecate and use exchangeWardenToken instead
 function validateWardenToken(wardenServer, wardenPort, security_token, apiVersion = 'v1', protocol = require('https')) {
   return new Promise((resolve, reject) => {
     let wardenGetPath = '/api/' + apiVersion + '/tokens/current';
@@ -87,9 +86,9 @@ function validateWardenToken(wardenServer, wardenPort, security_token, apiVersio
 
     let reqGet = protocol.request(optionsget, (res) => {
         res.on('data', (getData) => {
-            let getDataObj = JSON.parse(getData);
-            const hasToken = getDataObj.data && getDataObj.data.grant && getDataObj.data.grant.token;
-            resolve(hasToken);
+          let getDataObj = JSON.parse(getData);
+          const hasToken = getDataObj.data && getDataObj.data.grant && getDataObj.data.grant.token;
+          resolve(hasToken);
         })
     })
 
